@@ -1,14 +1,20 @@
-# Thi Vinh Huy
+<div align="center">
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:1f6feb,100:58a6ff&height=150&section=header&text=Thi%20Vinh%20Huy&fontSize=42&fontColor=ffffff&fontAlignY=35&desc=AI%20Engineer%20%7C%20LLM%20Workflow%20Orchestration&descAlignY=58&descSize=16" />
+</div>
 
-**AI Engineer** — LLM workflow orchestration, retrieval systems, and agent evaluation.
-Ho Chi Minh City, Vietnam. Open to roles in Vietnam or remote.
+<div align="center">
 
-[![Email](https://img.shields.io/badge/Email-huythi121022%40gmail.com-333333?style=flat-square&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-huytv122-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
+LLM workflow orchestration &nbsp;&middot;&nbsp; Retrieval systems &nbsp;&middot;&nbsp; Agent evaluation
+
+[![Email](https://img.shields.io/badge/Email-huythi121022@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-huytv122-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
+[![Location](https://img.shields.io/badge/Ho_Chi_Minh_City-238636?style=for-the-badge&logo=googlemaps&logoColor=white)](#)
+
+</div>
 
 ---
 
-## About
+## 👤 About
 
 I design and maintain **LLM workflows in production** — orchestrated chains of specialised LLM
 calls with routing, retrieval, tool calling, and cost tracking, backed by deterministic code
@@ -32,7 +38,7 @@ contradicted my own design.
 
 ---
 
-## Experience
+## 💼 Experience
 
 ### AI Engineer · DFM Company
 **February 2025 – Present** · Text-to-CAD for sheet-metal manufacturing
@@ -43,6 +49,56 @@ requirement analysis, manufacturability validation, RAG-based code generation, c
 step planning, shape-change detection, and clarification handling.
 
 What I own and how it works:
+
+```mermaid
+flowchart TB
+    REQ(["User request<br/>natural language"]) --> ROUTE{{"greeting_classification<br/>LLM &rarr; JSON intent"}}
+
+    ROUTE -->|greeting / info / process| SHORT(["Direct reply"])
+    ROUTE -->|cad_request| PARAM["Parameter extraction<br/>LLM primary, regex as hint"]
+
+    PARAM --> ASK{"missing_info<br/>in contract?"}
+    ASK -->|yes| Q(["Ask clarifying<br/>questions"])
+    Q -.->|next turn| CONF["confirm_detector<br/>chain"]
+    CONF -.-> PARAM
+
+    ASK -->|no| SPLIT[" "]
+
+    subgraph RAG["Dual-context retrieval &mdash; never merged"]
+        direction LR
+        R1["retrieve_rules_only<br/>manufacturing rules"]
+        R2["retrieve_examples_only<br/>code examples"]
+    end
+
+    SPLIT --> RAG
+    RAG --> RANK["Listwise LLM-as-judge rerank<br/>smaller model than the generator"]
+    RANK --> DEP["ensure_rule_dependencies<br/>code re-inserts omitted rules"]
+
+    DEP --> CALC["Geometry computed in<br/>pure Python, not by the LLM"]
+    CALC --> VAL{"Manufacturability<br/>validation"}
+    VAL -->|pass| GEN["RAG code generation"]
+    VAL -->|fail| Q
+    GEN --> CAD(["3D CAD model"])
+
+    OBS[["Per-chain cost &amp; token tracking<br/>latency percentiles"]]
+    ROUTE -.-> OBS
+    RANK -.-> OBS
+    GEN -.-> OBS
+
+    classDef io fill:#1f6feb,stroke:#58a6ff,color:#fff
+    classDef det fill:#238636,stroke:#3fb950,color:#fff
+    classDef ask fill:#9e6a03,stroke:#d29922,color:#fff
+    class REQ,CAD,SHORT io
+    class CALC,DEP det
+    class Q,ASK ask
+    style OBS fill:#8957e5,stroke:#a371f7,color:#fff
+    style ROUTE fill:#161b22,stroke:#58a6ff,color:#fff
+    style SPLIT fill:none,stroke:none
+```
+
+> Green nodes are deterministic Python; the model never decides them. Amber is where the system
+> stops and asks instead of guessing.
+
 
 | Area | Approach |
 |---|---|
@@ -59,7 +115,7 @@ Stack: LangChain · OpenAI API · FAISS · FastAPI · AWS S3 · Docker · FreeCA
 
 ---
 
-## Projects
+## 🚀 Projects
 
 ### AuditFlow — agent for financial-statement tie-out
 `in development` · Python · OpenAI API · Langfuse · pytest · mutation testing
@@ -122,7 +178,7 @@ FastAPI endpoint.
 
 ---
 
-## How I work
+## 🧭 How I work
 
 - **Test-driven, and sceptical of tests.** Red-green cycles, then mutation testing to check the
   tests themselves. "All tests pass" is a starting point for review, not a conclusion.
@@ -135,7 +191,12 @@ FastAPI endpoint.
 
 ---
 
-## Stack
+## 🛠️ Stack
+
+<div align="center">
+<img src="https://skillicons.dev/icons?i=py,fastapi,pytorch,docker,aws,postgres,git,githubactions,linux,opencv&theme=dark" />
+</div>
+
 
 **LLM & orchestration** — LangChain · OpenAI API · function/tool calling · prompt contracts ·
 LLM-as-judge reranking · speculative execution
@@ -153,7 +214,7 @@ Tesseract OCR · PDF coordinate-based extraction
 
 ---
 
-## Education & research
+## 🎓 Education & research
 
 **M.Sc. Computer Science** — University of Information Technology, VNU-HCM · 2026 – present
 Research direction: **evaluation and reliability of LLM agents for Vietnamese** — measuring whether
@@ -164,6 +225,28 @@ Member, AI Club UIT.
 
 ---
 
+---
+
+## 📊 GitHub
+
+<div align="center">
+
+<img height="150" src="https://github-readme-stats-salesp07.vercel.app/api?username=vinhhuy12&show_icons=true&count_private=true&include_all_commits=true&hide_border=true&theme=tokyonight&title_color=58A6FF&icon_color=58A6FF&bg_color=0d1117&cache_seconds=86400" />
+<img height="150" src="https://streak-stats.demolab.com?user=vinhhuy12&hide_border=true&theme=tokyonight&background=0d1117&ring=58A6FF&fire=58A6FF&currStreakLabel=58A6FF" />
+
+<br><br>
+
+<img width="80%" src="https://ghchart.rshah.org/58A6FF/vinhhuy12" alt="contribution chart" />
+
+<br><br>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/vinhhuy12/vinhhuy12/output/github-contribution-grid-snake-dark.svg?v=3" />
+  <img width="88%" alt="contribution snake" src="https://raw.githubusercontent.com/vinhhuy12/vinhhuy12/output/github-contribution-grid-snake.svg?v=3" />
+</picture>
+
+</div>
+
 <div align="center">
 
 **Open to AI Engineer roles — Ho Chi Minh City or remote.**
@@ -172,3 +255,5 @@ Member, AI Club UIT.
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
 
 </div>
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:58a6ff,50:1f6feb,100:0d1117&height=110&section=footer" />
