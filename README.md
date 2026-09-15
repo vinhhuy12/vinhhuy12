@@ -42,72 +42,6 @@ next:      M.Sc. Computer Science @ UIT - VNU-HCM (2026)
 
 ---
 
-## 🏗️ Hệ thống tôi xây trông như thế nào
-
-**Agentic loop, không phải RAG pipeline thẳng.** Khác biệt nằm ở ba chỗ: agent *tự quyết định gọi
-tool nào* (có chặn số vòng), *state sống qua nhiều lượt*, và *mọi lượt đều có trace để đo*.
-
-```mermaid
-flowchart TB
-    U(["User · EN / FR / VI"]):::ext
-
-    U <-->|SSE stream · JWT| GW[API Gateway<br/>FastAPI]
-    GW <--> DE{{Decision Engine<br/>central router}}
-
-    subgraph STATE["🧠 State & Memory"]
-        direction LR
-        CM[(Conversation<br/>Memory)]
-        TC["Turn Context<br/>tool transcript + cache"]
-    end
-
-    subgraph AGENTS["🤖 Parallel Async Agents"]
-        direction LR
-        A1[Retrieval<br/>Agent]
-        A2[CAD Spec<br/>Agent]
-        A3[Codegen<br/>Agent]
-    end
-
-    subgraph TOOLS["🔧 Tool Layer"]
-        direction LR
-        T1["dual-context<br/>FAISS search"]
-        T2[query<br/>expansion]
-        T3[LLM<br/>reranker]
-        T4[CAD<br/>executor]
-    end
-
-    DE <--> STATE
-    DE ==>|fan-out| AGENTS
-    AGENTS -->|tool call| TOOLS
-    TOOLS -->|results| TC
-    TC -->|next round| DE
-
-    A3 --> T4
-    T4 --> CHK{Build<br/>hợp lệ?}
-    CHK -->|lỗi thực thi| HEAL["Self-Heal<br/>chẩn đoán → vá code"]
-    HEAL -.->|retry có chặn vòng| A3
-    CHK -->|đạt| OUT(["3D CAD Model"]):::ok
-    CHK -->|hết lượt thử| STOP(["Báo lỗi, không đoán bừa"]):::warn
-
-    OBS[["📡 Observability<br/>trace · metrics · eval"]]:::obs
-    AGENTS -.-> OBS
-    TOOLS -.-> OBS
-    CHK -.-> OBS
-
-    classDef ext fill:#1f6feb,stroke:#58a6ff,color:#fff
-    classDef ok fill:#238636,stroke:#3fb950,color:#fff
-    classDef warn fill:#9e6a03,stroke:#d29922,color:#fff
-    classDef obs fill:#8957e5,stroke:#a371f7,color:#fff
-    style DE fill:#1f2937,stroke:#58a6ff,color:#fff
-    style CHK fill:#1f2937,stroke:#a371f7,color:#fff
-    style HEAL fill:#3d1d00,stroke:#d29922,color:#fff
-```
-
-> **Vòng lặp mới là phần khó**, không phải prompt. Ba thứ tôi luôn xây kèm:
-> **chặn số vòng lặp** (agent không được retry vô hạn), **đường thoát** (hết lượt thì báo lỗi
-> thay vì đoán bừa), và **trace từng lượt** (không đo được thì không cải thiện được).
-
----
-
 ## 💼 Kinh nghiệm / Experience
 
 <table>
@@ -232,7 +166,6 @@ Hệ agent rà soát hồ sơ kiểm toán. Nguyên tắc thiết kế: **độ 
 
 <div align="center">
 
-![2026](https://img.shields.io/badge/2026-254_contributions-238636?style=for-the-badge&logo=github&logoColor=white)
 ![Focus](https://img.shields.io/badge/Tr%E1%BB%8Dng_t%C3%A2m-Multi--Agent_%C2%B7_RAG-58A6FF?style=for-the-badge)
 
 <img width="49%" src="https://github-readme-stats-salesp07.vercel.app/api?username=vinhhuy12&show_icons=true&count_private=true&include_all_commits=true&hide_border=true&theme=tokyonight&title_color=58A6FF&icon_color=58A6FF&cache_seconds=86400" />
