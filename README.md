@@ -11,8 +11,7 @@
 <div align="center">
 
 [![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/YOUR-HANDLE)
-[![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://YOUR-SITE.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
 [![Location](https://img.shields.io/badge/Ho_Chi_Minh_City-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white)](#)
 
 <img src="https://komarev.com/ghpvc/?username=vinhhuy12&style=for-the-badge&color=58A6FF&label=PROFILE+VIEWS" alt="views" />
@@ -146,7 +145,7 @@ Hệ multi-agent chuyển **ngôn ngữ tự nhiên → mô hình CAD 3D**, đa 
 ### 🎓 UIT Admission Chatbot
 **Multi-Agent RAG · Song ngữ**
 
-[![Repo](https://img.shields.io/badge/View_Repo-171515?style=flat-square&logo=github)](https://github.com/vinhhuy12/REPO-NAME)
+![Private](https://img.shields.io/badge/Mã_nguồn-riêng_tư-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/Sẵn_sàng_demo_khi_phỏng_vấn-238636?style=flat-square)
 
 Chatbot tư vấn tuyển sinh, kiến trúc multi-agent với cổng kiểm chứng trước khi trả lời.
 
@@ -170,7 +169,7 @@ Chạy song song *speculative*: routing + query expansion + preload retriever c�
 ### 🪪 ID Card Extraction Pipeline
 **Computer Vision · OCR**
 
-[![Repo](https://img.shields.io/badge/View_Repo-171515?style=flat-square&logo=github)](https://github.com/vinhhuy12/REPO-NAME)
+![Private](https://img.shields.io/badge/Mã_nguồn-riêng_tư-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/Sẵn_sàng_demo_khi_phỏng_vấn-238636?style=flat-square)
 
 Pipeline 2 tầng đọc CCCD: phát hiện chip → trích xuất 9 trường thông tin.
 
@@ -295,7 +294,7 @@ Thành viên **AI Club UIT**
 ### 💬 Đang mở cơ hội **AI Engineer** — TP.HCM hoặc remote
 
 [![Email](https://img.shields.io/badge/Liên_hệ_Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/Kết_nối_LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/YOUR-HANDLE)
+[![LinkedIn](https://img.shields.io/badge/Kết_nối_LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
 
 <br>
 
