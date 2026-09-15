@@ -145,7 +145,7 @@ Hệ multi-agent chuyển **ngôn ngữ tự nhiên → mô hình CAD 3D**, đa 
 ### 🎓 UIT Admission Chatbot
 **Multi-Agent RAG · Song ngữ**
 
-![Private](https://img.shields.io/badge/Mã_nguồn-riêng_tư-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/Sẵn_sàng_demo_khi_phỏng_vấn-238636?style=flat-square)
+![Private](https://img.shields.io/badge/M%C3%A3_ngu%E1%BB%93n-ri%C3%AAng_t%C6%B0-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/S%E1%BA%B5n_s%C3%A0ng_demo_khi_ph%E1%BB%8Fng_v%E1%BA%A5n-238636?style=flat-square)
 
 Chatbot tư vấn tuyển sinh, kiến trúc multi-agent với cổng kiểm chứng trước khi trả lời.
 
@@ -169,7 +169,7 @@ Chạy song song *speculative*: routing + query expansion + preload retriever c�
 ### 🪪 ID Card Extraction Pipeline
 **Computer Vision · OCR**
 
-![Private](https://img.shields.io/badge/Mã_nguồn-riêng_tư-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/Sẵn_sàng_demo_khi_phỏng_vấn-238636?style=flat-square)
+![Private](https://img.shields.io/badge/M%C3%A3_ngu%E1%BB%93n-ri%C3%AAng_t%C6%B0-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/S%E1%BA%B5n_s%C3%A0ng_demo_khi_ph%E1%BB%8Fng_v%E1%BA%A5n-238636?style=flat-square)
 
 Pipeline 2 tầng đọc CCCD: phát hiện chip → trích xuất 9 trường thông tin.
 
@@ -233,7 +233,7 @@ Hệ agent rà soát hồ sơ kiểm toán. Nguyên tắc thiết kế: **độ 
 <div align="center">
 
 ![2026](https://img.shields.io/badge/2026-254_contributions-238636?style=for-the-badge&logo=github&logoColor=white)
-![Focus](https://img.shields.io/badge/Trọng_tâm-Multi--Agent_·_RAG-58A6FF?style=for-the-badge)
+![Focus](https://img.shields.io/badge/Tr%E1%BB%8Dng_t%C3%A2m-Multi--Agent_%C2%B7_RAG-58A6FF?style=for-the-badge)
 
 <img width="49%" src="https://github-readme-stats-salesp07.vercel.app/api?username=vinhhuy12&show_icons=true&count_private=true&include_all_commits=true&hide_border=true&theme=tokyonight&title_color=58A6FF&icon_color=58A6FF&cache_seconds=86400" />
 <img width="41%" src="https://streak-stats.demolab.com?user=vinhhuy12&hide_border=true&theme=tokyonight&ring=58A6FF&fire=58A6FF&currStreakLabel=58A6FF&date_format=j%20M%5B%20Y%5D" />
@@ -293,8 +293,8 @@ Thành viên **AI Club UIT**
 
 ### 💬 Đang mở cơ hội **AI Engineer** — TP.HCM hoặc remote
 
-[![Email](https://img.shields.io/badge/Liên_hệ_Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/Kết_nối_LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
+[![Email](https://img.shields.io/badge/Li%C3%AAn_h%E1%BB%87_Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/K%E1%BA%BFt_n%E1%BB%91i_LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
 
 <br>
 
