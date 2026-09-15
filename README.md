@@ -1,238 +1,174 @@
-<div align="center">
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,2,5,30&height=220&section=header&text=Thi%20Vinh%20Huy&fontSize=54&fontColor=ffffff&animation=fadeIn&fontAlignY=34&desc=AI%20Engineer%20%C2%B7%20Multi-Agent%20LLM%20%26%20Production%20RAG&descAlignY=54&descSize=18" />
-</div>
+# Thi Vinh Huy
+
+**AI Engineer** — LLM workflow orchestration, retrieval systems, and agent evaluation.
+Ho Chi Minh City, Vietnam. Open to roles in Vietnam or remote.
+
+[![Email](https://img.shields.io/badge/Email-huythi121022%40gmail.com-333333?style=flat-square&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-huytv122-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
+
+---
+
+## About
+
+I design and maintain **LLM workflows in production** — orchestrated chains of specialised LLM
+calls with routing, retrieval, tool calling, and cost tracking, backed by deterministic code
+wherever correctness matters more than fluency.
+
+I have been an AI Engineer at **DFM Company since February 2025**, working on a
+natural-language-to-3D-CAD system that is released and in active maintenance. I hold a B.Sc. in
+Computer Science from the University of Information Technology (VNU-HCM) and began an M.Sc. there
+in 2026, focusing on **evaluation and reliability of LLM agents for Vietnamese**.
+
+Two convictions shape how I build:
+
+**Deterministic code beats a confident model.** In the CAD system the LLM extracts parameters from
+natural language, but the arithmetic runs in plain Python. When a retrieved rule has a mandatory
+dependency the model forgot, code adds it back automatically. The model proposes; the code decides.
+
+**A number you cannot reproduce is worse than no number.** I track cost and latency per chain, run
+RAGAS on a golden set, trace every run through Langfuse, and use mutation testing because a green
+test suite is not evidence. Most of what I have learned recently came from measurements that
+contradicted my own design.
+
+---
+
+## Experience
+
+### AI Engineer · DFM Company
+**February 2025 – Present** · Text-to-CAD for sheet-metal manufacturing
+
+A production system that turns a natural-language request into a 3D CAD model. One orchestrator
+class coordinates roughly **ten specialised LLM chains** that share state: intent classification,
+requirement analysis, manufacturability validation, RAG-based code generation, code editing,
+step planning, shape-change detection, and clarification handling.
+
+What I own and how it works:
+
+| Area | Approach |
+|---|---|
+| **Orchestration** | Sequential chain composition over shared state, fully `async` with `asyncio.gather` fan-out and per-stage timing decorators |
+| **Routing** | LLM-based intent classification returning structured JSON, branched in Python — not keyword rules |
+| **Dual-context RAG** | Two deliberately **unmerged** retrieval paths — manufacturing rules and code examples — serving two different stages of generation |
+| **Reranking** | Listwise LLM-as-judge: candidate previews and metadata go into one prompt; the model returns a ranking with scores and reasons. A smaller model reranks than generates |
+| **Numeric safety** | The LLM extracts parameters; a pure-Python function computes the geometry. I do not let a language model do arithmetic |
+| **Dependency safety net** | If a selected rule has a mandatory companion rule the model omitted, code re-inserts it before generation |
+| **Ambiguity handling** | Every prompt carries a `missing_info` / `questions[]` contract so the system asks instead of guessing. On ambiguous edits the default is **add, never delete** |
+| **Observability** | Per-chain token and cost accounting, plus latency percentiles and process-level resource monitoring |
+
+Stack: LangChain · OpenAI API · FAISS · FastAPI · AWS S3 · Docker · FreeCAD
+
+---
+
+## Projects
+
+### AuditFlow — agent for financial-statement tie-out
+`in development` · Python · OpenAI API · Langfuse · pytest · mutation testing
+
+An agent that cross-checks Vietnamese financial statements against the balance identities required
+by Circular 200 — reading PDFs, including scanned ones via OCR, and deciding whether the numbers
+reconcile or the case should be escalated to a human.
+
+**Architecture.** A non-deterministic harness drives one LLM planner over **five contract-bound
+tools** (`find_pages`, `read_pages`, `check_balance`, `report`, `escalate`) that wrap a fully
+deterministic core. The boundary is the point: the planner chooses *what to look at*, while every
+judgement about whether the books balance is made by code that behaves the same way every run.
+
+**Engineering.** 318 passing tests, **41/41 mutants killed**, 53 commits. Every run is traced
+through a self-hosted Langfuse instance. The whole repository is English-only after a deliberate
+840-identifier refactor.
+
+**What it actually taught me** — the findings that reversed my own decisions:
+
+- A green suite proves very little. At one commit **242 passing tests** coexisted with five real
+  bugs found by independent review, and mutation testing then exposed two more gaps that 263
+  passing tests had missed. Both were tests passing for the wrong reason.
+- The verifier was called at the *start* of the loop while extraction happened at the *end*, so
+  OCR output — the only path that can read a scanned document — was never checked. The system was
+  solving cases correctly and then reporting failure. Fixing the loop moved dev-set coverage from
+  1/10 to 5/10, and none of that gain came from improving extraction.
+- I measured the signal I was most confident in — the statutory form code — and it had only
+  **60–80% recall**, partly because OCR reads `B01` as `BO1`. A cost optimisation projected to
+  save 70–79% was built on that assumption, so I measured it and dropped it before writing code.
+- The agent's action space contained exactly **one** element. It ranked hypotheses and then
+  discarded the ranking, because nothing downstream could execute the action it chose. Naming that
+  precisely was worth more than any feature I could have added that week.
+
+### UIT Admission Chatbot — bilingual RAG assistant
+`private repository` · LlamaIndex · Qdrant · OpenAI API · FastAPI · RAGAS · Langfuse
+
+A Vietnamese/English admissions assistant combining retrieval with genuine OpenAI tool calling.
+
+- **Function calling** with a required-tool contract across five tools — casual response, document
+  search, admission-score lookup, and two major-filtering tools. One tool call per turn by design.
+- **Query understanding** runs two mechanisms concurrently: conversational rewriting, which turns a
+  context-dependent question into a standalone one, and **HyDE**, whose hypothetical passage is used
+  only as a search query and never enters the answer context.
+- **Speculative execution** — routing, query expansion, and retriever preload start together; once
+  the router resolves, the branches that lost are cancelled.
+- **Evaluation** with RAGAS (`faithfulness`, `answer_relevancy`) over a stored result set, and
+  post-hoc faithfulness scoring on live traffic logged to Langfuse as measurement rather than as a
+  blocking gate.
+- **CI/CD** via GitHub Actions: tests gate the deployment push.
+
+### ID Card Extraction Pipeline — document CV
+`private repository` · YOLOv8 · Detectron2 · Tesseract OCR · OpenCV · FastAPI
+
+Two-stage extraction for Vietnamese citizen ID cards: locate the card and its chip region, then
+extract nine structured fields with a detection ensemble and OCR post-processing, served behind a
+FastAPI endpoint.
+
+> Both project repositories are private. I am happy to walk through the architecture, the code, and
+> the failure cases in an interview.
+
+---
+
+## How I work
+
+- **Test-driven, and sceptical of tests.** Red-green cycles, then mutation testing to check the
+  tests themselves. "All tests pass" is a starting point for review, not a conclusion.
+- **Measure before building.** Several features in AuditFlow were designed, measured, and dropped
+  before any implementation, because the measurement removed the reason to build them.
+- **Independent verification.** For anything that becomes a decision, I check it against a second
+  independent source rather than trusting a single read.
+- **Write down what failed.** Reversed decisions and wrong estimates are recorded with dates
+  alongside the successes, because that record is what stops the same mistake twice.
+
+---
+
+## Stack
+
+**LLM & orchestration** — LangChain · OpenAI API · function/tool calling · prompt contracts ·
+LLM-as-judge reranking · speculative execution
+
+**Retrieval** — Qdrant · FAISS · LlamaIndex · HyDE · query rewriting · dual-context retrieval
+
+**Evaluation & observability** — RAGAS · Langfuse (self-hosted) · golden datasets · per-chain cost
+and latency tracking · mutation testing · pytest
+
+**Backend & infrastructure** — Python · FastAPI · async/await · Docker · GitHub Actions ·
+GitLab CI/CD · AWS S3 · PostgreSQL · SQLite · Linux
+
+**ML & document processing** — PyTorch · Transformers · YOLOv8 · Detectron2 · OpenCV ·
+Tesseract OCR · PDF coordinate-based extraction
+
+---
+
+## Education & research
+
+**M.Sc. Computer Science** — University of Information Technology, VNU-HCM · 2026 – present
+Research direction: **evaluation and reliability of LLM agents for Vietnamese** — measuring whether
+an agent's decisions are correct, not only whether its output looks right.
+
+**B.Sc. Computer Science** — University of Information Technology, VNU-HCM · 2021 – 2025
+Member, AI Club UIT.
+
+---
 
 <div align="center">
-  <a href="https://github.com/vinhhuy12">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=58A6FF&center=true&vCenter=true&width=680&lines=I+build+LLM+systems+where+being+wrong+is+expensive.;Retrieval+precision+%3E+prompt+engineering.;Currently+shipping+multi-agent+RAG+at+DFM+Company." alt="Typing SVG" />
-  </a>
-</div>
 
-<div align="center">
+**Open to AI Engineer roles — Ho Chi Minh City or remote.**
 
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
+[![Email](https://img.shields.io/badge/Email-333333?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
-[![Location](https://img.shields.io/badge/Ho_Chi_Minh_City-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white)](#)
-
-<img src="https://komarev.com/ghpvc/?username=vinhhuy12&style=for-the-badge&color=58A6FF&label=PROFILE+VIEWS" alt="views" />
-
-</div>
-
-<br>
-
-## 👋 Về tôi / About me
-
-<img align="right" width="380" src="https://user-images.githubusercontent.com/74038190/229223263-cf2e4b07-2615-4f87-9c38-e37600f8381a.gif" />
-
-```yaml
-name:      Thi Vinh Huy
-role:      AI Engineer @ DFM Company
-based_in:  Ho Chi Minh City, Vietnam
-focus:     Multi-agent orchestration · RAG · Vietnamese NLP
-next:      M.Sc. Computer Science @ UIT - VNU-HCM (2026)
-```
-
-- 🔭 **Hiện tại** — xây hệ multi-agent biến ngôn ngữ tự nhiên (EN/FR/VI) thành **mô hình CAD 3D**, phục vụ 100+ người dùng đồng thời.
-- 🧠 **Tôi làm gì** — tôi không ghép prompt. Tôi thiết kế phần *quyết định xem câu trả lời có đủ tốt để trả về hay không*: hybrid retrieval, LLM reranking, confidence gate, self-healing loop.
-- 🌱 **Đang học** — LLM self-hosting, agent evaluation, và chuẩn bị hướng nghiên cứu Thạc sĩ: **citation-grounded generation cho tiếng Việt**.
-- 💬 **Hỏi tôi về** — RAG chạy thật trong production, vì sao chatbot của bạn "ảo giác", cách đo chất lượng agent bằng số thay vì cảm tính.
-- ⚡ **Niềm tin nghề nghiệp** — *phần lớn "hallucination" chỉ là một cú trượt retrieval đội lốt.*
-
-<br clear="right"/>
-
----
-
-## 💼 Kinh nghiệm / Experience
-
-<table>
-<tr>
-<td width="130" align="center" valign="top">
-<br>
-<img src="https://img.shields.io/badge/Feb_2025-Present-238636?style=flat-square" /><br><br>
-<b>AI<br>Engineer</b>
-</td>
-<td valign="top">
-
-### Tolery API AI — **DFM Company**
-
-Hệ multi-agent chuyển **ngôn ngữ tự nhiên → mô hình CAD 3D**, đa ngôn ngữ EN/FR/VI.
-
-| Tôi đóng góp gì | Kết quả |
-|---|---|
-| Decision engine điều phối các agent async chạy song song | 100+ concurrent users |
-| Dual-context FAISS retrieval + LLM query expansion + reranking | Truy hồi đúng ngữ cảnh kỹ thuật |
-| **Self-healing loop**: phát hiện lỗi thực thi → tự vá → chạy lại | Giảm can thiệp thủ công |
-| SSE streaming + JWT auth, deploy Docker + GitLab CI/CD | Phản hồi real-time |
-
-</td>
-</tr>
-</table>
-
----
-
-## 🚀 Dự án / Projects
-
-<table>
-<tr>
-<td width="50%" valign="top">
-
-### 🎓 UIT Admission Chatbot
-**Multi-Agent RAG · Song ngữ**
-
-![Private](https://img.shields.io/badge/M%C3%A3_ngu%E1%BB%93n-ri%C3%AAng_t%C6%B0-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/S%E1%BA%B5n_s%C3%A0ng_demo_khi_ph%E1%BB%8Fng_v%E1%BA%A5n-238636?style=flat-square)
-
-Chatbot tư vấn tuyển sinh, kiến trúc multi-agent với cổng kiểm chứng trước khi trả lời.
-
-**⚡ Latency 14s → 8s (−40%)**
-
-Chạy song song *speculative*: routing + query expansion + preload retriever cùng lúc, bỏ nhánh thua.
-
-| | |
-|---|---|
-| Faithfulness | **≥ 0.6** enforced tại serve-time |
-| Reranker | GPT-4o-mini cho tiếng Việt, **0 RAM** |
-| Conversation | Intent + trả lời song ngữ trong **1 LLM call** |
-| Eval | RAGAS 4 metric · golden set 15+ Q&A |
-| Trace | LangSmith full tracing |
-
-`LlamaIndex` `Elasticsearch` `GPT-4o` `FastAPI` `RAGAS` `AWS`
-
-</td>
-<td width="50%" valign="top">
-
-### 🪪 ID Card Extraction Pipeline
-**Computer Vision · OCR**
-
-![Private](https://img.shields.io/badge/M%C3%A3_ngu%E1%BB%93n-ri%C3%AAng_t%C6%B0-6e7681?style=flat-square&logo=github&logoColor=white) ![Demo](https://img.shields.io/badge/S%E1%BA%B5n_s%C3%A0ng_demo_khi_ph%E1%BB%8Fng_v%E1%BA%A5n-238636?style=flat-square)
-
-Pipeline 2 tầng đọc CCCD: phát hiện chip → trích xuất 9 trường thông tin.
-
-**🎯 94% accuracy · 3 phút → 5 giây (−96%)**
-
-Thay thế hoàn toàn khâu nhập liệu thủ công.
-
-| | |
-|---|---|
-| Tầng 1 | Detect chip CCCD |
-| Tầng 2 | YOLO ensemble, 9-class field |
-| Hậu xử lý | OCR correction + validation |
-| Phục vụ | FastAPI endpoint |
-
-`YOLOv8` `Detectron2` `Tesseract` `OpenCV` `FastAPI`
-
-<br>
-
-### 🧾 AuditFlow `đang làm`
-**Multi-agent audit review**
-
-Hệ agent rà soát hồ sơ kiểm toán. Nguyên tắc thiết kế: **độ tin cậy tỉ lệ nghịch với mức độ LLM tham gia.**
-
-</td>
-</tr>
-</table>
-
----
-
-## 🛠️ Công nghệ / Tech Stack
-
-<div align="center">
-
-**Dùng hằng ngày**
-
-<img src="https://skillicons.dev/icons?i=py,fastapi,docker,elasticsearch,postgres,aws,git,linux&theme=dark" />
-
-![LlamaIndex](https://img.shields.io/badge/LlamaIndex-8A2BE2?style=flat-square)
-![OpenAI](https://img.shields.io/badge/OpenAI_API-412991?style=flat-square&logo=openai&logoColor=white)
-![FAISS](https://img.shields.io/badge/FAISS-0467DF?style=flat-square&logo=meta&logoColor=white)
-![LangSmith](https://img.shields.io/badge/LangSmith-1C3C3C?style=flat-square&logo=langchain&logoColor=white)
-![RAGAS](https://img.shields.io/badge/RAGAS-FF6F00?style=flat-square)
-
-**Thành thạo**
-
-<img src="https://skillicons.dev/icons?i=pytorch,tensorflow,flask,mysql,github,gitlab,vscode,anaconda&theme=dark" />
-
-![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square&logo=langchain&logoColor=white)
-![HuggingFace](https://img.shields.io/badge/HuggingFace-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
-![pgvector](https://img.shields.io/badge/pgvector-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=flat-square&logo=sqlalchemy&logoColor=white)
-![YOLO](https://img.shields.io/badge/YOLOv8-00FFFF?style=flat-square&logo=yolo&logoColor=black)
-![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=flat-square&logo=opencv&logoColor=white)
-
-</div>
-
----
-
-## 📊 Thống kê GitHub
-
-<div align="center">
-
-![Focus](https://img.shields.io/badge/Tr%E1%BB%8Dng_t%C3%A2m-Multi--Agent_%C2%B7_RAG-58A6FF?style=for-the-badge)
-
-<img width="49%" src="https://github-readme-stats-salesp07.vercel.app/api?username=vinhhuy12&show_icons=true&count_private=true&include_all_commits=true&hide_border=true&theme=tokyonight&title_color=58A6FF&icon_color=58A6FF&cache_seconds=86400" />
-<img width="41%" src="https://streak-stats.demolab.com?user=vinhhuy12&hide_border=true&theme=tokyonight&ring=58A6FF&fire=58A6FF&currStreakLabel=58A6FF&date_format=j%20M%5B%20Y%5D" />
-
-<img width="41%" src="https://github-readme-stats-salesp07.vercel.app/api/top-langs/?username=vinhhuy12&layout=compact&langs_count=8&hide_border=true&theme=tokyonight&title_color=58A6FF&cache_seconds=86400" />
-
-<br><br>
-
-**Contribution — 12 tháng gần nhất**
-
-<img width="92%" src="https://ghchart.rshah.org/58A6FF/vinhhuy12" alt="contribution chart" />
-
-</div>
-
-<div align="center">
-
-**🐍 Rắn ăn contribution**
-
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/vinhhuy12/vinhhuy12/output/github-contribution-grid-snake-dark.svg?v=2" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/vinhhuy12/vinhhuy12/output/github-contribution-grid-snake.svg?v=2" />
-    <img width="92%" alt="contribution snake" src="https://raw.githubusercontent.com/vinhhuy12/vinhhuy12/output/github-contribution-grid-snake.svg?v=2" />
-  </picture>
-
-</div>
-
----
-
-## 🎓 Học vấn / Education
-
-<table>
-<tr>
-<td align="center" width="50%">
-
-### M.Sc. Computer Science
-**UIT — VNU-HCM** · `2026 →`
-
-Hướng nghiên cứu: retrieval precision &
-citation-grounded generation cho tiếng Việt
-
-</td>
-<td align="center" width="50%">
-
-### B.Sc. Computer Science
-**UIT — VNU-HCM** · `2021 – 2025`
-
-GPA 3.0/4.0 · TOEIC 600 (L&R)
-Thành viên **AI Club UIT**
-
-</td>
-</tr>
-</table>
-
----
-
-<div align="center">
-
-### 💬 Đang mở cơ hội **AI Engineer** — TP.HCM hoặc remote
-
-[![Email](https://img.shields.io/badge/Li%C3%AAn_h%E1%BB%87_Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/K%E1%BA%BFt_n%E1%BB%91i_LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/huytv122/)
-
-<br>
-
-> *"Retrieval precision, reasoning accuracy, output verifiability — that's the bar."*
-
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,2,5,30&height=120&section=footer" />
 
 </div>
