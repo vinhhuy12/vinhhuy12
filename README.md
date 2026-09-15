@@ -50,56 +50,6 @@ step planning, shape-change detection, and clarification handling.
 
 What I own and how it works:
 
-```mermaid
-flowchart TB
-    REQ(["User request<br/>natural language"]) --> ROUTE{{"greeting_classification<br/>LLM &rarr; JSON intent"}}
-
-    ROUTE -->|greeting / info / process| SHORT(["Direct reply"])
-    ROUTE -->|cad_request| PARAM["Parameter extraction<br/>LLM primary, regex as hint"]
-
-    PARAM --> ASK{"missing_info<br/>in contract?"}
-    ASK -->|yes| Q(["Ask clarifying<br/>questions"])
-    Q -.->|next turn| CONF["confirm_detector<br/>chain"]
-    CONF -.-> PARAM
-
-    ASK -->|no| SPLIT[" "]
-
-    subgraph RAG["Dual-context retrieval &mdash; never merged"]
-        direction LR
-        R1["retrieve_rules_only<br/>manufacturing rules"]
-        R2["retrieve_examples_only<br/>code examples"]
-    end
-
-    SPLIT --> RAG
-    RAG --> RANK["Listwise LLM-as-judge rerank<br/>smaller model than the generator"]
-    RANK --> DEP["ensure_rule_dependencies<br/>code re-inserts omitted rules"]
-
-    DEP --> CALC["Geometry computed in<br/>pure Python, not by the LLM"]
-    CALC --> VAL{"Manufacturability<br/>validation"}
-    VAL -->|pass| GEN["RAG code generation"]
-    VAL -->|fail| Q
-    GEN --> CAD(["3D CAD model"])
-
-    OBS[["Per-chain cost &amp; token tracking<br/>latency percentiles"]]
-    ROUTE -.-> OBS
-    RANK -.-> OBS
-    GEN -.-> OBS
-
-    classDef io fill:#1f6feb,stroke:#58a6ff,color:#fff
-    classDef det fill:#238636,stroke:#3fb950,color:#fff
-    classDef ask fill:#9e6a03,stroke:#d29922,color:#fff
-    class REQ,CAD,SHORT io
-    class CALC,DEP det
-    class Q,ASK ask
-    style OBS fill:#8957e5,stroke:#a371f7,color:#fff
-    style ROUTE fill:#161b22,stroke:#58a6ff,color:#fff
-    style SPLIT fill:none,stroke:none
-```
-
-> Green nodes are deterministic Python; the model never decides them. Amber is where the system
-> stops and asks instead of guessing.
-
-
 | Area | Approach |
 |---|---|
 | **Orchestration** | Sequential chain composition over shared state, fully `async` with `asyncio.gather` fan-out and per-stage timing decorators |
