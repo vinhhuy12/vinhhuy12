@@ -1,105 +1,114 @@
 <div align="center">
 
-```
-╔══════════════════════════════════════════════════════════════╗
-║                                                              ║
-║        T H I   V I N H   H U Y                              ║
-║        AI Engineer  ·  RAG / LLM Systems                    ║
-║        Building things that think                           ║
-║                                                              ║
-╚══════════════════════════════════════════════════════════════╝
-```
+# Thi Vinh Huy
 
-[![Gmail](https://img.shields.io/badge/huythi121022%40gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
-[![Location](https://img.shields.io/badge/Ho_Chi_Minh_City-1A2E4A?style=flat-square&logo=googlemaps&logoColor=white)]()
-[![Phone](https://img.shields.io/badge/(+84)_333_670_249-25D366?style=flat-square&logo=whatsapp&logoColor=white)]()
+**AI Engineer** · Multi-agent LLM systems & production RAG
+
+Retrieval precision · Reasoning accuracy · Output verifiability
+
+[![Email](https://img.shields.io/badge/Email-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:huythi121022@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/YOUR-HANDLE)
+[![Location](https://img.shields.io/badge/Ho_Chi_Minh_City-1A2E4A?style=flat-square&logo=googlemaps&logoColor=white)](#)
 
 </div>
 
 ---
 
-## 🧠 What I build
+## What I work on
 
-I design and ship **multi-agent LLM systems** and **production RAG pipelines** — not demos, real systems serving real users.
+I build LLM systems where **being wrong is expensive** — so most of my work is the part
+that decides whether an answer is good enough to return.
 
 ```
-Natural Language  →  [Multi-Agent Orchestrator]  →  Structured Output
-                            ↕
-              [Hybrid Retriever]  ·  [LLM Reranker]
-              [Confidence Gate]   ·  [Self-Healing Loop]
+Query ──▶ Router ──▶ Hybrid Retriever ──▶ Reranker ──▶ Generator ──▶ Answer
+             │         (BM25 + dense)       (LLM)          │
+             └──────────── Confidence gate ◀───────────────┘
+                           (retry / escalate / refuse)
 ```
 
-**Current focus:** Legal AI — retrieval precision, citation-grounded generation, Vietnamese NLP.
+Three things I care about, in order:
+
+- **Retrieval beats prompting.** Most "hallucination" is a retrieval miss wearing a costume.
+- **A system that can't say "I don't know" isn't production-ready.** Confidence gates, not vibes.
+- **If it isn't measured, it didn't improve.** RAGAS, golden sets, tracing on every change.
 
 ---
 
-## 🚀 Production Work
+## Currently
 
-### Tolery API AI · DFM Company *(Feb 2025 – Present)*
-> Multi-agent system: natural language (EN/FR/VI) → 3D CAD models
+- **AuditFlow** — multi-agent system for audit document review. Verifier design where
+  trust is *inversely* proportional to LLM involvement.
+- **M.Sc. Computer Science, UIT — VNU-HCM** (from 2026). Research direction: retrieval
+  precision and citation-grounded generation for Vietnamese.
+
+---
+
+## Production
+
+### Tolery API AI — DFM Company · *Feb 2025 – Present*
+
+**Natural language (EN/FR/VI) → 3D CAD models.** Multi-agent, 100+ concurrent users.
 
 - Centralized decision engine routing across parallel async agents
-- Dual-context FAISS retrieval + LLM query expansion + LLM-based reranking
-- Self-healing code loop: auto-detects error → patches → re-executes
-- 100+ concurrent users · SSE streaming · JWT auth
+- Dual-context FAISS retrieval + LLM query expansion + LLM reranking
+- Self-healing code loop: detects execution error → patches → re-runs
+- SSE streaming, JWT auth, deployed on Docker + GitLab CI/CD
 
 ---
 
-## 📦 Notable Projects
+## Selected projects
 
-### [UIT Admission Chatbot](https://github.com/vinhhuy12) — Multi-Agent RAG
-`LlamaIndex` `Elasticsearch` `GPT-4o` `FastAPI` `LangSmith` `RAGAS` `AWS`
+### UIT Admission Chatbot — Multi-agent RAG
 
-| Metric | Result |
-|--------|--------|
-| Latency | 14s → **8s** (−40%) |
-| Faithfulness guard | ≥ 0.6 |
-| Evaluation | 4-metric RAGAS pipeline |
-| Observability | Full LangSmith tracing |
+`LlamaIndex` · `Elasticsearch` · `GPT-4o` · `FastAPI` · `LangSmith` · `RAGAS` · `AWS`
 
-- Parallel speculative execution: routing + query expansion + retriever pre-load run concurrently
-- LLM-based reranker (GPT-4o-mini) tuned for Vietnamese semantics, zero RAM overhead
-- Bilingual ConversationAgent: intent detection + reply in a **single LLM call**
-- Golden eval dataset (15+ Q&A, Easy/Medium/Hard) with automated report generation
+> 🔗 **[View repository →](https://github.com/vinhhuy12/REPO-NAME)**
+
+**End-to-end latency 14s → 8s (−40%)** by running routing, query expansion, and retriever
+pre-load concurrently instead of in sequence — speculative execution, discard the loser.
+
+| | |
+|---|---|
+| **Faithfulness floor** | ≥ 0.6, enforced at serve time — below it, the answer is not returned |
+| **Reranking** | GPT-4o-mini reranker tuned for Vietnamese semantics — no local model, no RAM cost |
+| **Conversation** | Intent detection + bilingual reply in a **single** LLM call |
+| **Evaluation** | 4-metric RAGAS pipeline over a golden set (15+ Q&A, Easy/Medium/Hard) |
+| **Observability** | Full LangSmith tracing, automated report generation |
 
 ---
 
 ### ID Card Extraction Pipeline — Computer Vision
-`YOLOv8` `Detectron2` `Tesseract OCR` `OpenCV` `FastAPI`
 
-| Metric | Result |
-|--------|--------|
-| Accuracy | **94%** field extraction |
-| Speed | 3 min → **5 sec** (−96%) |
+`YOLOv8` · `Detectron2` · `Tesseract OCR` · `OpenCV` · `FastAPI`
 
-Two-stage: CCCD chip detection → 9-class field extraction via YOLO ensemble + OCR post-processing.
+> 🔗 **[View repository →](https://github.com/vinhhuy12/REPO-NAME)**
 
----
+Two-stage pipeline: CCCD chip detection, then 9-class field extraction via a YOLO ensemble
+with OCR post-processing.
 
-## 🛠 Tech Stack
-
-```yaml
-RAG / Retrieval:   LlamaIndex · Elasticsearch · FAISS · BM25 + Dense Vector · Reranking
-LLM:               OpenAI API · GPT-4o · HuggingFace · LangChain · LangSmith
-Evaluation:        RAGAS · Faithfulness · Answer Relevancy · Golden Datasets
-Backend:           Python · FastAPI · SQLAlchemy · RESTful API
-ML / CV:           PyTorch · TensorFlow · YOLO · OpenCV · Transformers
-Infrastructure:    Docker · GitLab CI/CD · AWS RDS/S3 · Linux
-Databases:         FAISS · Elasticsearch · pgvector
-```
+**94% field-level accuracy** · manual entry **3 min → 5 sec** per card (−96%)
 
 ---
 
-## 🎓 Education
+## Stack
 
-**University of Information Technology — VNU-HCM**
-B.Sc. Computer Science · GPA 3.0/4.0 · 2021–2025
-TOEIC 600 (L&R) · Member, AI Club UIT
+**Daily** — Python · FastAPI · LlamaIndex · OpenAI API · Elasticsearch · FAISS · RAGAS · LangSmith · Docker
+
+**Comfortable** — LangChain · PyTorch · HuggingFace · pgvector · SQLAlchemy · AWS (RDS/S3) · GitLab CI/CD · Linux
+
+**Have shipped with** — TensorFlow · YOLO · Detectron2 · OpenCV · Tesseract
 
 ---
+
+## Education
+
+**B.Sc. Computer Science** — University of Information Technology, VNU-HCM · 2021–2025
+GPA 3.0/4.0 · TOEIC 600 (L&R) · Member, AI Club UIT
 
 <div align="center">
 
-*"Retrieval precision, reasoning accuracy, output verifiability — that's the bar."*
+<br>
+
+*Open to AI Engineer roles — Ho Chi Minh City or remote.*
 
 </div>
